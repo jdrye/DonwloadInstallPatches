@@ -61,4 +61,5 @@ if ($objResults.Updates.count -gt 0){
     $InstallResult = $objInstaller.Install()
 }
 
+#Optional - But nice to do it after
 shutdown -r -t 30 -c "Restart after windows update"
