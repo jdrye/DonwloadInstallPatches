@@ -2,7 +2,7 @@ Get-Module -ListAvailable | Where-Object { $_.Name -Like "VMware*" } | Import-Mo
 Set-PowerCLIConfiguration -InvalidCertificateAction Ignore -Confirm:$false
 Connect-VIServer -Server vCenter
 $vms = Get-VM
-$WUScript = {ipmo PSWindowsUpdate; Get-WUInstall -AcceptAll -IgnoreReboot | Out-File C:\PSWindowsUpdate.log} # –AutoReboot (ifyouwant)
+$WUScript = {ipmo PSWindowsUpdate; Get-WUInstall -AcceptAll -IgnoreReboot | Out-File C:\PSWindowsUpdate.log} # –AutoReboot or -IgnoreReboot
  
 
 foreach($vm in $vms)
@@ -20,8 +20,6 @@ foreach($vm in $vms)
                     echo $vmname.name
                     Get-Item "\\share\PSWindowsUpdate" | Copy-VMGuestFile -Destination "C:\Windows\System32\WindowsPowerShell\v1.0\Modules\" -VM $vm -LocalToGuest -Force
                     Set-ExecutionPolicy RemoteSigned
-                    #Import-Module PSWindowsUpdate
-                    #Install-Module -Name PSWindowsUpdate
                     Invoke-WUInstall -ComputerName $vm -Script $WUScript -Confirm:$false
                     }
                 else 
